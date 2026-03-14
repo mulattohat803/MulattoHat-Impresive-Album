@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ImpresiveMC — NEURAL//GRID. Underground Hip-Hop. Stream now.">
+  <title>ImpresiveMC — NEURAL//GRID</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+/* ═══════════════════════════════════════════
+   ImpresiveMC — NEURAL//GRID
+   style.css
+   ═══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Space+Mono:wght@400;700&display=swap');
+
+/* ── Reset & Base ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --y:   #e8ff00;    /* acid yellow */
+  --r:   #ff3d00;    /* burnt orange-red */
+  --w:   #d4d4c8;    /* off-white text */
+  --m:   #52524a;    /* muted */
+  --bg:  #080807;    /* near-black */
+  --bg2: #0f0f0c;
+  --bg3: #161613;
+  --bg4: #1c1c18;
+  --bdr: #252520;    /* border */
+  --font-disp: 'Bebas Neue', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-vhs:  'VT323', monospace;
+}
+
+body {
+  font-family: var(--font-mono);
+  background: var(--bg);
+  color: var(--w);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.hidden { display: none !important; }
+
+/* ── Overlays ─────────────────────────────── */
+.overlay-grain {
+  position: fixed; inset: 0; z-index: 900; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay; opacity: 0.5;
+}
+
+.overlay-scanlines {
+  position: fixed; inset: 0; z-index: 899; pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px,
+    transparent 1px, transparent 5px
+  );
+}
+
+/* ── VHS INTRO ────────────────────────────── */
+#intro {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #000;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+#intro-static {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0.7;
+}
+
+.vhs-ui {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  padding: 40px;
+}
+
+.vhs-scanlines {
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 2px,
+    transparent 2px, transparent 5px
+  );
+}
+
+.vhs-tracking {
+  font-family: var(--font-vhs); font-size: 14px;
+  color: rgba(255,255,255,0.4); letter-spacing: 0.2em;
+  position: absolute; top: 20px; left: 24px;
+}
+
+.vhs-logo {
+  text-align: center;
+}
+
+.vhs-pre {
+  font-family: var(--font-vhs); font-size: 14px;
+  color: rgba(232,255,0,0.5); letter-spacing: 0.4em;
+  margin-bottom: 8px;
+}
+
+.vhs-title {
+  font-family: var(--font-disp); font-size: clamp(48px,12vw,96px);
+  color: #fff; letter-spacing: 0.05em; line-height: 1;
+  text-shadow: 3px 0 #ff3d00, -3px 0 #00ffcc;
+  min-height: 1em;
+}
+
+.vhs-sub {
+  font-family: var(--font-vhs); font-size: 16px;
+  color: rgba(255,255,255,0.35); letter-spacing: 0.3em;
+  margin-top: 12px;
+}
+
+.vhs-meta {
+  position: absolute; bottom: 20px;
+  display: flex; gap: 24px; align-items: center;
+  font-family: var(--font-vhs); font-size: 14px; letter-spacing: 0.15em;
+}
+
+.vhs-rec { color: #ff3d00; animation: blink 1s step-start infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.vhs-time { color: rgba(255,255,255,0.5); }
+.vhs-tape { color: rgba(255,255,255,0.3); }
+
+.vhs-bar-top, .vhs-bar-bot {
+  position: absolute; left: 0; right: 0; height: 6px;
+  background: rgba(255,255,255,0.08);
+}
+.vhs-bar-top { top: 0; }
+.vhs-bar-bot { bottom: 0; }
+
+.vhs-bar-mid {
+  position: absolute; left: 0; right: 0; height: 4px;
+  background: rgba(232,255,0,0.3);
+  top: 50%; transition: top 0.15s, height 0.15s, opacity 0.1s;
+}
+
+.skip-btn {
+  position: absolute; bottom: 24px; right: 24px; z-index: 20;
+  font-family: var(--font-vhs); font-size: 14px; letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.3); background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 14px; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.skip-btn:hover { color: var(--y); border-color: var(--y); }
+
+/* ── NAV ──────────────────────────────────── */
+#nav {
+  position: sticky; top: 0; z-index: 500;
+  display: flex; align-items: center; gap: 0;
+  padding: 0 28px;
+  background: rgba(8,8,7,0.95);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--bdr);
+  height: 54px;
+  transition: border-color 0.3s;
+}
+
+#nav.scrolled { border-bottom-color: rgba(232,255,0,0.2); }
+
+.nav-logo {
+  font-family: var(--font-disp); font-size: 20px; letter-spacing: 0.15em;
+  color: var(--w); line-height: 1; flex-shrink: 0; margin-right: 32px;
+}
+
+.logo-accent { color: var(--y); }
+
+.nav-links {
+  display: flex; list-style: none; gap: 0; flex: 1;
+}
+
+.nav-links a {
+  display: block; padding: 0 18px; height: 54px;
+  line-height: 54px; font-family: var(--font-vhs); font-size: 16px;
+  letter-spacing: 0.12em; color: var(--m);
+  text-decoration: none; transition: color 0.15s, background 0.15s;
+}
+
+.nav-links a:hover {
+  color: var(--y); background: rgba(232,255,0,0.04);
+}
+
+.nav-play-btn {
+  margin-left: auto; font-family: var(--font-disp); font-size: 14px;
+  letter-spacing: 0.15em; padding: 8px 20px;
+  background: var(--y); color: #000; border: none; cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.nav-play-btn:hover { background: #fff; }
+.nav-play-btn:active { transform: scale(0.97); }
+
+/* ── HERO ─────────────────────────────────── */
+.hero {
+  display: grid; grid-template-columns: 300px 1fr; gap: 48px;
+  padding: 48px 28px 40px; border-bottom: 1px solid var(--bdr);
+  position: relative; z-index: 10;
+  background:
+    linear-gradient(135deg, rgba(232,255,0,0.015) 0%, transparent 50%),
+    var(--bg);
+}
+
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, var(--y), transparent 40%);
+}
+
+.hero-left { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+
+.album-cover {
+  position: relative; width: 280px; height: 280px;
+  cursor: pointer; flex-shrink: 0;
+  border: 1px solid var(--bdr);
+  transition: border-color 0.2s;
+}
+.album-cover:hover { border-color: rgba(232,255,0,0.3); }
+
+.cover-corner {
+  position: absolute; width: 16px; height: 16px; z-index: 3;
+  border-color: var(--y); border-style: solid;
+}
+.cover-corner.tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.cover-corner.tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.cover-corner.bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.cover-corner.br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+.cover-glitch-layer {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.album-meta-strip {
+  font-family: var(--font-vhs); font-size: 13px; letter-spacing: 0.1em;
+  color: var(--m); display: flex; gap: 8px; flex-wrap: wrap;
+}
+
+/* HERO RIGHT */
+.hero-right { display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-vhs); font-size: 14px; letter-spacing: 0.2em;
+  color: var(--r);
+}
+
+.dot-pulse {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--r);
+  animation: dpulse 1.5s ease-in-out infinite; flex-shrink: 0;
+}
+@keyframes dpulse {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,61,0,0.5); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(255,61,0,0); }
+}
+
+.hero-title { display: flex; flex-direction: column; gap: 4px; }
+
+.ht-artist {
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+  color: var(--m); letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+.ht-album {
+  font-family: var(--font-disp); font-size: clamp(52px, 8vw, 88px);
+  line-height: 0.88; color: var(--w); letter-spacing: 0.03em;
+}
+.ht-album em {
+  font-style: normal; color: var(--y);
+  -webkit-text-stroke: 0px;
+}
+
+.hero-desc {
+  font-family: var(--font-mono); font-size: 12px; color: var(--m);
+  line-height: 1.8; letter-spacing: 0.03em;
+}
+
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-primary {
+  font-family: var(--font-disp); font-size: 16px; letter-spacing: 0.15em;
+  padding: 12px 32px; background: var(--y); color: #000; border: none;
+  cursor: pointer; transition: background 0.15s, transform 0.1s;
+  position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0); transition: background 0.2s;
+}
+.btn-primary:hover { background: #fff; }
+.btn-primary:active { transform: translate(1px,1px); }
+
+.btn-ghost {
+  font-family: var(--font-vhs); font-size: 16px; letter-spacing: 0.12em;
+  padding: 11px 22px; background: transparent; color: var(--m);
+  border: 1px solid var(--bdr); cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-ghost:hover { color: var(--w); border-color: #4a4a42; }
+
+.hero-stats { display: flex; align-items: center; gap: 0; }
+
+.stat { display: flex; flex-direction: column; gap: 2px; padding-right: 28px; }
+.stat-n {
+  font-family: var(--font-disp); font-size: 28px; color: var(--y);
+  line-height: 1;
+}
+.stat-l {
+  font-family: var(--font-vhs); font-size: 11px; color: var(--m);
+  letter-spacing: 0.2em;
+}
+.stat-divider {
+  width: 1px; height: 40px; background: var(--bdr); margin-right: 28px;
+}
+
+/* ── PLAYER / VIZ ─────────────────────────── */
+.player-section {
+  position: sticky; top: 54px; z-index: 400;
+  background: var(--bg2); border-bottom: 2px solid var(--bdr);
+}
+
+.viz-wrap {
+  position: relative; height: 140px; overflow: hidden;
+  background: var(--bg); cursor: pointer;
+}
+
+#viz-canvas { display: block; width: 100%; height: 140px; }
+
+.viz-overlay-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg, rgba(0,0,0,0.14) 0px, rgba(0,0,0,0.14) 1px,
+    transparent 1px, transparent 5px
+  );
+}
+
+.viz-label {
+  position: absolute; top: 8px; left: 12px;
+  font-family: var(--font-vhs); font-size: 11px;
+  color: rgba(232,255,0,0.35); letter-spacing: 0.15em;
+  pointer-events: none;
+}
+
+.viz-mode-btns {
+  position: absolute; top: 8px; right: 12px;
+  display: flex; gap: 4px;
+}
+
+.mode-btn {
+  font-family: var(--font-vhs); font-size: 12px; letter-spacing: 0.1em;
+  padding: 3px 8px; background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.1); color: var(--m);
+  cursor: pointer; transition: all 0.15s;
+}
+.mode-btn:hover { color: var(--y); border-color: rgba(232,255,0,0.3); }
+.mode-btn.active { color: var(--y); border-color: rgba(232,255,0,0.5); background: rgba(232,255,0,0.07); }
+
+/* Player bar */
+.player-bar {
+  display: grid; grid-template-columns: 200px 1fr 120px;
+  align-items: center; gap: 20px; padding: 12px 20px;
+  background: var(--bg3); border-top: 1px solid var(--bdr);
+}
+
+.player-tag {
+  font-family: var(--font-vhs); font-size: 11px; color: var(--r);
+  letter-spacing: 0.2em; margin-bottom: 3px;
+}
+.player-name {
+  font-family: var(--font-disp); font-size: 18px; letter-spacing: 0.1em;
+  color: var(--w); line-height: 1; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-center { display: flex; flex-direction: column; gap: 6px; }
+
+.player-controls { display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+.pctrl {
+  font-family: var(--font-vhs); font-size: 16px;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--bdr);
+  color: var(--m); cursor: pointer; transition: all 0.15s;
+  padding: 0; line-height: 1;
+}
+.pctrl:hover { color: var(--y); border-color: rgba(232,255,0,0.4); }
+.pctrl.main {
+  width: 40px; height: 40px; background: var(--y); border-color: var(--y);
+  color: #000; font-size: 14px;
+}
+.pctrl.main:hover { background: #fff; border-color: #fff; }
+
+.player-progress {
+  position: relative; padding: 8px 0; cursor: pointer;
+}
+.pp-track {
+  height: 3px; background: var(--bdr); position: relative; overflow: visible;
+}
+.pp-fill {
+  height: 100%; background: var(--y); width: 0%;
+  transition: width 0.25s linear; position: absolute; top: 0; left: 0;
+}
+.pp-head {
+  position: absolute; top: 50%; left: 0%;
+  transform: translate(-50%, -50%);
+  width: 10px; height: 10px;
+  background: var(--y); clip-path: polygon(50% 0%,100% 100%,0% 100%);
+  transition: left 0.25s linear;
+}
+
+.player-times {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-vhs); font-size: 12px; color: var(--m);
+  letter-spacing: 0.1em;
+}
+
+.player-vol {
+  display: flex; align-items: center; gap: 6px;
+}
+.vol-label, .vol-val {
+  font-family: var(--font-vhs); font-size: 12px; color: var(--m);
+  letter-spacing: 0.1em;
+}
+input[type=range] {
+  -webkit-appearance: none; flex: 1; height: 3px;
+  background: var(--bdr); outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px;
+  background: var(--y); cursor: pointer;
+}
+input[type=range]::-moz-range-thumb {
+  width: 12px; height: 12px; background: var(--y); border: none; cursor: pointer;
+}
+
+/* ── SECTIONS ─────────────────────────────── */
+.section-header {
+  display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px;
+}
+.section-title {
+  font-family: var(--font-disp); font-size: 24px; letter-spacing: 0.15em;
+  color: var(--w); flex-shrink: 0; line-height: 1;
+}
+.section-line { flex: 1; height: 1px; background: var(--bdr); }
+.section-tag {
+  font-family: var(--font-vhs); font-size: 13px; color: var(--m);
+  letter-spacing: 0.1em; flex-shrink: 0;
+}
+
+/* ── TRACKLIST ────────────────────────────── */
+.tracks-section { padding: 36px 28px 0; }
+
+.tracklist { border-top: 1px solid var(--bdr); }
+
+.track-row {
+  display: grid; grid-template-columns: 40px 1fr auto;
+  align-items: center; gap: 14px;
+  padding: 11px 12px; border-bottom: 1px solid rgba(37,37,32,0.7);
+  cursor: pointer; transition: background 0.12s;
+  position: relative;
+}
+
+.track-row::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--y); transform: scaleY(0);
+  transition: transform 0.18s;
+}
+
+.track-row:hover { background: rgba(232,255,0,0.03); }
+.track-row:hover::before { transform: scaleY(1); }
+.track-row.active { background: rgba(232,255,0,0.04); }
+.track-row.active::before { transform: scaleY(1); }
+
+.tr-num {
+  font-family: var(--font-vhs); font-size: 15px; color: var(--m);
+  text-align: center; position: relative; height: 18px;
+}
+.tr-num-txt { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.tr-bars { display: none; gap: 2px; align-items: flex-end; height: 18px; justify-content: center; position: absolute; inset: 0; }
+.track-row.active .tr-bars { display: flex; }
+.track-row.active .tr-num-txt { display: none; }
+.track-row.active .tr-num { color: var(--y); }
+
+.tr-bar {
+  width: 3px; background: var(--y); border-radius: 0;
+}
+.tr-bar:nth-child(1) { animation: trbounce 0.55s ease-in-out infinite; }
+.tr-bar:nth-child(2) { animation: trbounce 0.7s  ease-in-out infinite 0.12s; }
+.tr-bar:nth-child(3) { animation: trbounce 0.6s  ease-in-out infinite 0.25s; }
+@keyframes trbounce {
+  0%,100% { height: 3px; }
+  50% { height: 16px; }
+}
+
+.tr-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tr-name {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--w); letter-spacing: 0.05em; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.track-row.active .tr-name { color: var(--y); }
+.tr-feat { font-family: var(--font-vhs); font-size: 13px; color: var(--m); letter-spacing: 0.05em; }
+
+.tr-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+.tr-badge {
+  font-family: var(--font-vhs); font-size: 11px; padding: 2px 7px;
+  letter-spacing: 0.1em; border: 1px solid;
+}
+.tr-badge.fire { color: var(--r); border-color: rgba(255,61,0,0.4); background: rgba(255,61,0,0.07); }
+.tr-badge.new  { color: var(--y); border-color: rgba(232,255,0,0.35); background: rgba(232,255,0,0.06); }
+.tr-badge.feat { color: #888;    border-color: rgba(136,136,136,0.25); }
+
+.tr-dur { font-family: var(--font-vhs); font-size: 14px; color: var(--m); min-width: 36px; text-align: right; }
+
+/* ── BIO ──────────────────────────────────── */
+.bio-section { padding: 48px 28px; border-top: 1px solid var(--bdr); }
+
+.bio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1px;
+  background: var(--bdr);
+}
+
+.bio-card {
+  background: var(--bg); padding: 24px; display: flex;
+  flex-direction: column; gap: 10px;
+}
+
+.bio-main {
+  grid-column: 1 / -1;
+  background: var(--bg2);
+}
+
+.bio-card-label {
+  font-family: var(--font-vhs); font-size: 11px; color: var(--r);
+  letter-spacing: 0.25em;
+}
+
+.bio-text { font-family: var(--font-mono); font-size: 12px; color: var(--m); line-height: 1.8; }
+
+.bio-big-num {
+  font-family: var(--font-disp); font-size: clamp(28px,5vw,48px);
+  color: var(--w); line-height: 1.05;
+}
+
+.bio-small { font-family: var(--font-vhs); font-size: 13px; color: var(--m); letter-spacing: 0.1em; }
+
+.bio-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.bio-tag {
+  font-family: var(--font-vhs); font-size: 13px; letter-spacing: 0.12em;
+  padding: 3px 10px; border: 1px solid var(--bdr); color: var(--m);
+}
+
+/* ── MERCH ────────────────────────────────── */
+.merch-section { padding: 48px 28px; border-top: 1px solid var(--bdr); }
+
+.merch-placeholder {
+  border: 1px dashed var(--bdr); padding: 48px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.merch-icon {
+  font-family: var(--font-disp); font-size: 28px; letter-spacing: 0.2em;
+  color: var(--m);
+}
+.merch-sub { font-family: var(--font-vhs); font-size: 14px; color: var(--m); letter-spacing: 0.1em; }
+.merch-sub code { color: var(--y); font-family: var(--font-mono); }
+
+/* ── CONTACT ──────────────────────────────── */
+.contact-section { padding: 48px 28px; border-top: 1px solid var(--bdr); }
+
+.contact-grid { display: flex; flex-direction: column; gap: 20px; }
+
+.contact-label { font-family: var(--font-vhs); font-size: 12px; color: var(--r); letter-spacing: 0.2em; margin-bottom: 8px; }
+
+.contact-email {
+  font-family: var(--font-disp); font-size: 28px; letter-spacing: 0.1em;
+  color: var(--y); text-decoration: none; transition: color 0.15s;
+  display: block; margin-bottom: 20px;
+}
+.contact-email:hover { color: #fff; }
+
+.social-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.social-btn {
+  font-family: var(--font-vhs); font-size: 15px; letter-spacing: 0.12em;
+  padding: 7px 16px; border: 1px solid var(--bdr); color: var(--m);
+  text-decoration: none; transition: all 0.15s; cursor: pointer;
+}
+.social-btn:hover { color: var(--y); border-color: rgba(232,255,0,0.4); }
+
+/* ── FOOTER ───────────────────────────────── */
+footer {
+  padding: 20px 28px; border-top: 1px solid var(--bdr);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 8px;
+  background: var(--bg);
+}
+
+.footer-logo {
+  font-family: var(--font-disp); font-size: 18px; letter-spacing: 0.15em; color: var(--m);
+}
+
+.footer-copy {
+  font-family: var(--font-vhs); font-size: 12px; color: var(--m);
+  letter-spacing: 0.1em;
+}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; gap: 24px; padding: 28px 16px; }
+  .album-cover { width: 240px; height: 240px; margin: 0 auto; }
+  #art-canvas { width: 240px !important; height: 240px !important; }
+  .ht-album { font-size: 52px; }
+  .player-bar { grid-template-columns: 1fr; gap: 10px; padding: 12px 16px; }
+  .player-vol { display: none; }
+  .bio-grid { grid-template-columns: 1fr; }
+  .bio-main { grid-column: 1; }
+  .tracks-section, .bio-section, .merch-section, .contact-section { padding: 28px 16px; }
+  .nav-links { display: none; }
+  footer { padding: 16px; }
+}
+
+@media (max-width: 480px) {
+  #nav { padding: 0 16px; }
+  .ht-album { font-size: 42px; }
+  .hero-stats { flex-wrap: wrap; gap: 12px; }
+  .stat-divider { display: none; }
+}
+
+  </style>
+</head>
+<body>
+
+<script>
+/**
+ * ═══════════════════════════════════════════
+ *  ImpresiveMC — NEURAL//GRID
+ *  TRACK DATA — Edit this file to update your album
+ * ═══════════════════════════════════════════
+ *
+ *  HOW TO EDIT TRACKS:
+ *  - name: Track title (ALL CAPS recommended)
+ *  - feat: Featured artist string, or "" for none
+ *  - dur: Duration in "M:SS" format
+ *  - tag: "fire" | "new" | "feat" | "" (leave blank for no badge)
+ *  - file: Path to your audio file (e.g. "audio/track01.mp3")
+ *          Leave as "" if you're linking to streaming platforms instead
+ *
+ *  HOW TO ADD AUDIO FILES:
+ *  1. Create an "audio/" folder in your project root
+ *  2. Add your .mp3 or .wav files there
+ *  3. Set the "file" field to "audio/yourfile.mp3"
+ */
+
+const ALBUM = {
+  title:   "NEURAL//GRID",
+  artist:  "IMPRESIVE_MC",
+  year:    "2025",
+  streams: "2.4M",
+  runtime: "47:22",
+};
+
+const TRACKS = [
+  {
+    num:  1,
+    name: "NEURAL OVERRIDE",
+    feat: "",
+    dur:  "3:42",
+    tag:  "new",
+    file: "",
+  },
+  {
+    num:  2,
+    name: "CHROME CITY",
+    feat: "ft. GHOST_RX",
+    dur:  "3:58",
+    tag:  "feat",
+    file: "",
+  },
+  {
+    num:  3,
+    name: "SIGNAL LOST",
+    feat: "",
+    dur:  "2:55",
+    tag:  "",
+    file: "",
+  },
+  {
+    num:  4,
+    name: "HEXAGON BARS",
+    feat: "",
+    dur:  "4:11",
+    tag:  "fire",
+    file: "",
+  },
+  {
+    num:  5,
+    name: "DARK PROTOCOL",
+    feat: "ft. NEON JONES",
+    dur:  "3:33",
+    tag:  "feat",
+    file: "",
+  },
+  {
+    num:  6,
+    name: "UPLOADED",
+    feat: "",
+    dur:  "3:48",
+    tag:  "fire",
+    file: "",
+  },
+  {
+    num:  7,
+    name: "VOLTAGE DREAMS",
+    feat: "",
+    dur:  "4:02",
+    tag:  "",
+    file: "",
+  },
+  {
+    num:  8,
+    name: "GRID RUNNER",
+    feat: "ft. CYPHER_K",
+    dur:  "3:21",
+    tag:  "feat",
+    file: "",
+  },
+  {
+    num:  9,
+    name: "STATIC FREQUENCY",
+    feat: "",
+    dur:  "3:55",
+    tag:  "",
+    file: "",
+  },
+  {
+    num:  10,
+    name: "THE ARCHITECT",
+    feat: "",
+    dur:  "5:14",
+    tag:  "fire",
+    file: "",
+  },
+  {
+    num:  11,
+    name: "REWIRED",
+    feat: "",
+    dur:  "3:27",
+    tag:  "",
+    file: "",
+  },
+  {
+    num:  12,
+    name: "LAST TRANSMISSION",
+    feat: "",
+    dur:  "5:16",
+    tag:  "new",
+    file: "",
+  },
+];
+
+/**
+ *  SOCIAL LINKS
+ *  Replace "#" with your real URLs
+ */
+const SOCIALS = {
+  spotify:    "#",
+  soundcloud: "#",
+  instagram:  "#",
+  twitter:    "#",
+  youtube:    "#",
+};
+
+/**
+ *  CONTACT
+ *  Replace with your real booking email
+ */
+const CONTACT_EMAIL = "booking@impresivemc.com";
+
+</script>
+<script>
+/* ═══════════════════════════════════════════
+   ImpresiveMC — NEURAL//GRID
+   main.js — All site logic
+   ═══════════════════════════════════════════ */
+
+'use strict';
+
+// ── State ────────────────────────────────────
+let activeTrack  = 0;
+let isPlaying    = false;
+let progress     = 0;
+let elapsed      = 0;
+let playInterval = null;
+let vizMode      = 'bars';
+let vizRunning   = false;
+let audioEl      = null;
+let usingRealAudio = false;
+
+// Visualizer data
+let vizData   = new Array(80).fill(0);
+let peakData  = new Array(80).fill(0);
+let peakHold  = new Array(80).fill(0);
+let scopeData = new Array(200).fill(0.5);
+
+// ── VHS INTRO ───────────────────────────────
+(function initIntro() {
+  const canvas = document.getElementById('intro-static');
+  const ctx    = canvas.getContext('2d');
+  let   frame  = 0;
+  let   introTimer;
+
+  function resizeIntro() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeIntro();
+  window.addEventListener('resize', resizeIntro);
+
+  // Typewriter for VHS title
+  const titleEl  = document.getElementById('vhs-title');
+  const titleStr = 'IMPRESIVE_MC';
+  let   charIdx  = 0;
+
+  function typeLetter() {
+    if (charIdx < titleStr.length) {
+      titleEl.textContent += titleStr[charIdx++];
+      setTimeout(typeLetter, 80 + Math.random() * 60);
+    }
+  }
+  setTimeout(typeLetter, 600);
+
+  // VHS clock counter
+  let clockSec = 0;
+  const clockEl = document.getElementById('vhs-clock');
+  const clockInterval = setInterval(() => {
+    clockSec++;
+    const h = String(Math.floor(clockSec / 3600)).padStart(2, '0');
+    const m = String(Math.floor((clockSec % 3600) / 60)).padStart(2, '0');
+    const s = String(clockSec % 60).padStart(2, '0');
+    clockEl.textContent = `${h}:${m}:${s}`;
+  }, 1000);
+
+  // Tracking bar glitch
+  const trackingEl  = document.getElementById('tracking-text');
+  const trackingMsgs = ['TRACKING...', 'ADJUSTING...', 'LOCKED ✓', 'TRACKING...', 'NO SIGNAL', 'TRACKING...'];
+  let   trackingIdx  = 0;
+  setInterval(() => {
+    trackingEl.textContent = trackingMsgs[trackingIdx % trackingMsgs.length];
+    trackingIdx++;
+  }, 900);
+
+  // VHS mid bar glitch
+  const midBar = document.getElementById('vhs-bar-mid');
+  setInterval(() => {
+    midBar.style.top       = (20 + Math.random() * 60) + '%';
+    midBar.style.height    = (2 + Math.random() * 8) + 'px';
+    midBar.style.opacity   = Math.random() > 0.4 ? '1' : '0';
+    midBar.style.transform = `translateX(${(Math.random() - 0.5) * 20}px)`;
+  }, 150);
+
+  // Static noise on canvas
+  function drawStatic() {
+    const w = canvas.width, h = canvas.height;
+    const imgData = ctx.createImageData(w, h);
+    const data    = imgData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const v = Math.random() * 60;
+      data[i] = data[i+1] = data[i+2] = v;
+      data[i+3] = 180;
+    }
+
+    // Horizontal scan bands
+    const bandY = (frame * 3) % h;
+    for (let x = 0; x < w; x++) {
+      for (let dy = 0; dy < 4; dy++) {
+        const idx = ((bandY + dy) * w + x) * 4;
+        data[idx] = data[idx+1] = data[idx+2] = 200;
+        data[idx+3] = 60;
+      }
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+    frame++;
+    if (frame < 180) requestAnimationFrame(drawStatic);
+    else {
+      // Fade out canvas after ~3s
+      canvas.style.transition = 'opacity 0.5s';
+      canvas.style.opacity = '0';
+    }
+  }
+  drawStatic();
+
+  // Auto-launch site after 4.5s
+  introTimer = setTimeout(launchSite, 4500);
+
+  window._introTimer     = introTimer;
+  window._clockInterval  = clockInterval;
+})();
+
+function skipIntro() {
+  clearTimeout(window._introTimer);
+  clearInterval(window._clockInterval);
+  launchSite();
+}
+
+function launchSite() {
+  const intro = document.getElementById('intro');
+  const site  = document.getElementById('site');
+  intro.style.transition = 'opacity 0.6s';
+  intro.style.opacity    = '0';
+  setTimeout(() => {
+    intro.style.display = 'none';
+    site.classList.remove('hidden');
+    site.style.opacity = '0';
+    site.style.transition = 'opacity 0.5s';
+    requestAnimationFrame(() => { site.style.opacity = '1'; });
+
+    initArtCanvas();
+    buildTracklist();
+    startVizLoop();
+    updateAlbumMeta();
+  }, 600);
+}
+
+// ── ALBUM META ───────────────────────────────
+function updateAlbumMeta() {
+  if (typeof ALBUM === 'undefined') return;
+  // Update any elements that display album info from tracks.js
+  document.querySelectorAll('.ht-album').forEach(el => {
+    el.innerHTML = ALBUM.title.replace('//', '//<br>').replace('NEURAL<br>', 'NEURAL<br><em>');
+  });
+}
+
+// ── ALBUM ART CANVAS ─────────────────────────
+function initArtCanvas() {
+  const canvas = document.getElementById('art-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 280, H = 280;
+  canvas.width  = W;
+  canvas.height = H;
+  drawAlbumArt(ctx, W, H, false);
+}
+
+function drawAlbumArt(ctx, W, H, glitching) {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = '#0d0d0b';
+  ctx.fillRect(0, 0, W, H);
+
+  // Diagonal hatch lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 8;
+  for (let i = -H; i < W + H; i += 22) {
+    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + H, H); ctx.stroke();
+  }
+
+  // Outer ring
+  ctx.strokeStyle = 'rgba(232,255,0,0.15)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(W/2, H/2 - 10, 100, 0, Math.PI * 2); ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(255,61,0,0.1)';
+  ctx.beginPath(); ctx.arc(W/2, H/2 - 10, 78, 0, Math.PI * 2); ctx.stroke();
+
+  // Abstract silhouette — polygon
+  ctx.strokeStyle = 'rgba(232,255,0,0.3)';
+  ctx.fillStyle   = 'rgba(232,255,0,0.04)';
+  ctx.lineWidth   = 1.5;
+  ctx.setLineDash([5, 3]);
+  ctx.beginPath();
+  const pts = [
+    [140, 52], [172, 88], [180, 130], [165, 168],
+    [140, 180], [115, 168], [100, 130], [108, 88]
+  ];
+  ctx.moveTo(pts[0][0], pts[0][1]);
+  pts.forEach(p => ctx.lineTo(p[0], p[1]));
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Eyes
+  ctx.fillStyle = '#e8ff00';
+  ctx.fillRect(122, 112, 12, 7);
+  ctx.fillRect(146, 112, 12, 7);
+
+  // Mic
+  ctx.strokeStyle = 'rgba(232,255,0,0.6)';
+  ctx.lineWidth   = 1.5;
+  ctx.beginPath(); ctx.arc(140, 148, 9, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = 'rgba(232,255,0,0.35)';
+  ctx.fillRect(136, 148, 8, 14);
+  ctx.strokeStyle = 'rgba(232,255,0,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(140, 162); ctx.lineTo(140, 172); ctx.stroke();
+
+  // Glitch bars
+  ctx.fillStyle = 'rgba(255,61,0,0.18)';
+  ctx.fillRect(0, 58, W, 3);
+  ctx.fillRect(0, 195, W * 0.7, 2);
+  ctx.fillStyle = 'rgba(232,255,0,0.1)';
+  ctx.fillRect(0, 215, W * 0.4, 2);
+
+  if (glitching) {
+    ctx.fillStyle = 'rgba(255,61,0,0.3)';
+    ctx.fillRect(0, 80 + Math.random() * 80, W, 3 + Math.random() * 6);
+    ctx.globalCompositeOperation = 'screen';
+    ctx.fillStyle = 'rgba(0,255,200,0.15)';
+    ctx.fillRect(Math.random() * 40 - 20, 0, W, H);
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  // Corner triangles
+  ctx.fillStyle = 'rgba(232,255,0,0.7)';
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(18,0); ctx.lineTo(0,18); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = 'rgba(255,61,0,0.5)';
+  ctx.beginPath(); ctx.moveTo(W,H); ctx.lineTo(W-18,H); ctx.lineTo(W,H-18); ctx.closePath(); ctx.fill();
+
+  // Stamp text
+  ctx.font = '8px "Space Mono", monospace';
+  ctx.fillStyle = 'rgba(232,255,0,0.25)';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('NEURAL//GRID', 16, H - 18);
+  ctx.fillStyle = 'rgba(255,61,0,0.2)';
+  ctx.fillText('IMPRESIVE_MC', 16, H - 8);
+}
+
+function glitchArt() {
+  const canvas = document.getElementById('art-canvas');
+  const ctx    = canvas.getContext('2d');
+  let   count  = 0;
+  const id = setInterval(() => {
+    drawAlbumArt(ctx, 280, 280, true);
+    if (++count > 8) { clearInterval(id); drawAlbumArt(ctx, 280, 280, false); }
+  }, 60);
+}
+
+// ── TRACKLIST ────────────────────────────────
+function buildTracklist() {
+  const container = document.getElementById('tracklist');
+  if (!container || typeof TRACKS === 'undefined') return;
+
+  container.innerHTML = TRACKS.map((t, i) => `
+    <div class="track-row ${i === activeTrack ? 'active' : ''}" onclick="playTrack(${i})" data-index="${i}">
+      <div class="tr-num">
+        <span class="tr-num-txt">${String(t.num).padStart(2, '0')}</span>
+        <div class="tr-bars">
+          <div class="tr-bar"></div>
+          <div class="tr-bar"></div>
+          <div class="tr-bar"></div>
+        </div>
+      </div>
+      <div class="tr-info">
+        <span class="tr-name">${t.name}</span>
+        ${t.feat ? `<span class="tr-feat">${t.feat}</span>` : ''}
+      </div>
+      <div class="tr-right">
+        ${t.tag ? `<span class="tr-badge ${t.tag}">${t.tag.toUpperCase()}</span>` : '<span></span>'}
+        <span class="tr-dur">${t.dur}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── PLAYBACK ─────────────────────────────────
+function playTrack(idx) {
+  if (typeof TRACKS === 'undefined') return;
+  activeTrack = idx;
+  isPlaying   = true;
+  elapsed     = 0;
+  progress    = 0;
+
+  clearInterval(playInterval);
+
+  const t     = TRACKS[idx];
+  const total = parseDur(t.dur);
+
+  // Try real audio first
+  if (t.file && t.file !== '') {
+    if (!audioEl) audioEl = new Audio();
+    audioEl.src = t.file;
+    audioEl.volume = (document.getElementById('vol-slider')?.value || 80) / 100;
+    audioEl.play().then(() => {
+      usingRealAudio = true;
+    }).catch(() => {
+      usingRealAudio = false;
+      startSimPlayback(total);
+    });
+
+    audioEl.ontimeupdate = () => {
+      elapsed  = audioEl.currentTime;
+      progress = elapsed / audioEl.duration;
+      updatePlayerUI();
+    };
+    audioEl.onended = () => { isPlaying = false; updatePlayBtn(); nextTrack(); };
+  } else {
+    usingRealAudio = false;
+    startSimPlayback(total);
+  }
+
+  updatePlayerInfo(t);
+  buildTracklist();
+}
+
+function startSimPlayback(total) {
+  playInterval = setInterval(() => {
+    elapsed += 0.25;
+    if (elapsed >= total) {
+      elapsed = total; isPlaying = false;
+      clearInterval(playInterval);
+      updatePlayBtn();
+      return;
+    }
+    progress = elapsed / total;
+    updatePlayerUI();
+  }, 250);
+}
+
+function updatePlayerInfo(t) {
+  document.getElementById('player-tag').textContent  = '// NOW PLAYING';
+  document.getElementById('player-name').textContent = t.name;
+  document.getElementById('tot-t').textContent        = t.dur;
+  document.getElementById('cur-t').textContent        = '0:00';
+  document.getElementById('pp-fill').style.width      = '0%';
+  document.getElementById('pp-head').style.left       = '0%';
+  document.getElementById('viz-label').textContent    = `// SIGNAL ACTIVE — ${t.name}`;
+  updatePlayBtn();
+}
+
+function updatePlayerUI() {
+  document.getElementById('cur-t').textContent   = fmtTime(elapsed);
+  const pct = (progress * 100).toFixed(2) + '%';
+  document.getElementById('pp-fill').style.width = pct;
+  document.getElementById('pp-head').style.left  = pct;
+}
+
+function updatePlayBtn() {
+  document.getElementById('ppbtn').innerHTML = isPlaying ? '&#9646;&#9646;' : '&#9654;';
+}
+
+function togglePlay() {
+  if (!isPlaying) {
+    isPlaying = true;
+    if (usingRealAudio && audioEl) {
+      audioEl.play();
+    } else {
+      const total = parseDur(TRACKS[activeTrack].dur);
+      startSimPlayback(total);
+    }
+    document.getElementById('viz-label').textContent = `// SIGNAL ACTIVE — ${TRACKS[activeTrack].name}`;
+  } else {
+    isPlaying = false;
+    clearInterval(playInterval);
+    if (usingRealAudio && audioEl) audioEl.pause();
+    document.getElementById('viz-label').textContent = '// SIGNAL PAUSED';
+  }
+  updatePlayBtn();
+}
+
+function prevTrack() {
+  playTrack((activeTrack - 1 + TRACKS.length) % TRACKS.length);
+}
+function nextTrack() {
+  playTrack((activeTrack + 1) % TRACKS.length);
+}
+
+function scrub(e) {
+  const bar   = document.getElementById('progress-bar');
+  const rect  = bar.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  const total = parseDur(TRACKS[activeTrack].dur);
+  elapsed     = ratio * total;
+  progress    = ratio;
+  if (usingRealAudio && audioEl) audioEl.currentTime = elapsed;
+  updatePlayerUI();
+}
+
+function setVol(v) {
+  document.getElementById('vol-val').textContent = v;
+  if (audioEl) audioEl.volume = v / 100;
+}
+
+// ── VISUALIZER ───────────────────────────────
+function setVizMode(mode, btn) {
+  vizMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function startVizLoop() {
+  if (vizRunning) return;
+  vizRunning = true;
+  const canvas = document.getElementById('viz-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight || 140;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let t = 0;
+  function frame() {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    t += 0.016;
+
+    if (isPlaying) {
+      // Generate organic spectrum
+      for (let i = 0; i < vizData.length; i++) {
+        const f    = i / vizData.length;
+        const bass = Math.pow(1 - f, 2.2) * 0.55;
+        const w1   = Math.sin(t * 3.1 + i * 0.32) * 0.28;
+        const w2   = Math.sin(t * 6.7 + i * 0.51) * 0.18;
+        const w3   = Math.cos(t * 2.4 + i * 0.17) * 0.22;
+        const kick = Math.random() < 0.04 ? Math.random() * 0.45 : 0;
+        const target = Math.max(0, Math.min(1, bass + w1 + w2 + w3 + kick + 0.06));
+        vizData[i] += (target - vizData[i]) * 0.22;
+
+        if (vizData[i] > peakData[i]) {
+          peakData[i] = vizData[i];
+          peakHold[i] = 55;
+        } else {
+          peakHold[i]--;
+          if (peakHold[i] < 0) peakData[i] = Math.max(0, peakData[i] - 0.007);
+        }
+      }
+      // Scope data
+      for (let i = 0; i < scopeData.length - 1; i++) scopeData[i] = scopeData[i + 1];
+      scopeData[scopeData.length - 1] = 0.5 + (Math.sin(t * 12) * 0.3 + Math.sin(t * 19) * 0.15 + (Math.random() - 0.5) * 0.05);
+    } else {
+      for (let i = 0; i < vizData.length; i++) {
+        vizData[i]  *= 0.88;
+        peakData[i] *= 0.96;
+      }
+    }
+
+    if (vizMode === 'bars') drawBars(ctx, W, H);
+    else if (vizMode === 'scope') drawScope(ctx, W, H);
+    else if (vizMode === 'dots')  drawDots(ctx, W, H);
+
+    // Scanlines
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    for (let y = 0; y < H; y += 4) ctx.fillRect(0, y, W, 1);
+
+    requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+function drawBars(ctx, W, H) {
+  const n   = vizData.length;
+  const bw  = W / n;
+
+  for (let i = 0; i < n; i++) {
+    const h   = Math.max(2, vizData[i] * H);
+    const x   = i * bw;
+    const v   = vizData[i];
+
+    // Color gradient: yellow → orange → red
+    if (v > 0.78) {
+      ctx.fillStyle = `rgba(255,61,0,${0.7 + v * 0.3})`;
+    } else if (v > 0.52) {
+      ctx.fillStyle = `rgba(255,140,0,${0.7 + v * 0.25})`;
+    } else {
+      ctx.fillStyle = `rgba(232,255,0,${0.55 + v * 0.35})`;
+    }
+    ctx.fillRect(x, H - h, bw - 1, h);
+
+    // Peak hold line
+    if (peakData[i] > 0.02) {
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.fillRect(x, H - peakData[i] * H - 1, bw - 1, 2);
+    }
+  }
+}
+
+function drawScope(ctx, W, H) {
+  ctx.strokeStyle = '#e8ff00';
+  ctx.lineWidth   = 1.5;
+  ctx.shadowColor = '#e8ff00';
+  ctx.shadowBlur  = 6;
+  ctx.beginPath();
+  for (let i = 0; i < scopeData.length; i++) {
+    const x = (i / scopeData.length) * W;
+    const y = scopeData[i] * H;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Center line
+  ctx.strokeStyle = 'rgba(232,255,0,0.12)';
+  ctx.lineWidth   = 1;
+  ctx.beginPath(); ctx.moveTo(0, H/2); ctx.lineTo(W, H/2); ctx.stroke();
+}
+
+function drawDots(ctx, W, H) {
+  const n = vizData.length;
+  const bw = W / n;
+  for (let i = 0; i < n; i++) {
+    const h = vizData[i] * H;
+    const x = i * bw + bw / 2;
+    const r = Math.max(1.5, vizData[i] * 6);
+    const v = vizData[i];
+    ctx.fillStyle = v > 0.7
+      ? `rgba(255,61,0,${0.6 + v * 0.4})`
+      : `rgba(232,255,0,${0.4 + v * 0.5})`;
+    ctx.beginPath(); ctx.arc(x, H - h, r, 0, Math.PI * 2); ctx.fill();
+    // Stem
+    ctx.strokeStyle = 'rgba(232,255,0,0.15)';
+    ctx.lineWidth   = 1;
+    ctx.beginPath(); ctx.moveTo(x, H); ctx.lineTo(x, H - h); ctx.stroke();
+  }
+}
+
+// ── HELPERS ──────────────────────────────────
+function parseDur(d) {
+  const [m, s] = d.split(':').map(Number);
+  return m * 60 + s;
+}
+
+function fmtTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${String(sec).padStart(2, '0')}`;
+}
+
+// ── NAV SCROLL HIGHLIGHT ─────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  if (window.scrollY > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+// ── SMOOTH ANCHOR SCROLL ─────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.querySelector(a.getAttribute('href'));
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+});
+
+</script>
+</body>
+</html>
