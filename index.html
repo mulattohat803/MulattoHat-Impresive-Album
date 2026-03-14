@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ImpresiveMC — NEURAL//GRID. Underground Hip-Hop. Stream now.">
+  <meta property="og:title" content="ImpresiveMC — NEURAL//GRID">
+  <meta property="og:description" content="Underground Hip-Hop. Stream NEURAL//GRID now.">
+  <title>ImpresiveMC — NEURAL//GRID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ═══ VHS INTRO SCREEN ═══ -->
+  <div id="intro">
+    <canvas id="intro-static"></canvas>
+    <div class="vhs-ui">
+      <div class="vhs-tracking" id="tracking-text">TRACKING...</div>
+      <div class="vhs-logo">
+        <div class="vhs-pre">LOADING</div>
+        <div class="vhs-title" id="vhs-title"></div>
+        <div class="vhs-sub">NEURAL//GRID · FULL ALBUM</div>
+      </div>
+      <div class="vhs-meta">
+        <span class="vhs-rec">● REC</span>
+        <span class="vhs-time" id="vhs-clock">00:00:00</span>
+        <span class="vhs-tape">SP · 12 TRACKS</span>
+      </div>
+      <div class="vhs-bar-top"></div>
+      <div class="vhs-bar-mid" id="vhs-bar-mid"></div>
+      <div class="vhs-bar-bot"></div>
+      <div class="vhs-scanlines"></div>
+    </div>
+    <button class="skip-btn" onclick="skipIntro()">SKIP ▶</button>
+  </div>
+
+  <!-- ═══ MAIN SITE ═══ -->
+  <div id="site" class="hidden">
+
+    <!-- Grain + scanline overlays -->
+    <div class="overlay-grain"></div>
+    <div class="overlay-scanlines"></div>
+
+    <!-- NAV -->
+    <nav id="nav">
+      <div class="nav-logo">IMPRESIVE<span class="logo-accent">_</span>MC</div>
+      <ul class="nav-links">
+        <li><a href="#tracks">TRACKS</a></li>
+        <li><a href="#bio">BIO</a></li>
+        <li><a href="#merch">MERCH</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+      <button class="nav-play-btn" onclick="playTrack(0)">▶ PLAY</button>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-left">
+        <div class="album-cover" onclick="glitchArt()">
+          <canvas id="art-canvas" width="280" height="280"></canvas>
+          <div class="cover-corner tl"></div>
+          <div class="cover-corner tr"></div>
+          <div class="cover-corner bl"></div>
+          <div class="cover-corner br"></div>
+          <div class="cover-glitch-layer" id="cover-glitch"></div>
+        </div>
+        <div class="album-meta-strip">
+          <span>2025</span><span>·</span><span>12 TRACKS</span><span>·</span><span>47:22</span><span>·</span><span>INDEPENDENT</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-eyebrow">
+          <span class="dot-pulse"></span>
+          STREAMING NOW — FULL ALBUM
+        </div>
+        <h1 class="hero-title">
+          <span class="ht-artist">IMPRESIVE_MC</span>
+          <span class="ht-album">NEURAL<br><em>//GRID</em></span>
+        </h1>
+        <p class="hero-desc">
+          Underground Hip-Hop from the Pacific Northwest.<br>
+          12 transmissions. Raw. Uncut. No label.
+        </p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="playTrack(0)">▶ PLAY ALBUM</button>
+          <button class="btn-ghost" onclick="document.getElementById('tracks').scrollIntoView({behavior:'smooth'})">VIEW TRACKLIST</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-n">2.4M</span><span class="stat-l">STREAMS</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-n">12</span><span class="stat-l">TRACKS</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-n">PNW</span><span class="stat-l">ORIGIN</span></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- VISUALIZER + PLAYER -->
+    <section class="player-section">
+      <div class="viz-wrap">
+        <canvas id="viz-canvas"></canvas>
+        <div class="viz-overlay-lines"></div>
+        <div class="viz-label" id="viz-label">// SIGNAL INACTIVE</div>
+        <div class="viz-mode-btns">
+          <button class="mode-btn active" onclick="setVizMode('bars',this)">BARS</button>
+          <button class="mode-btn" onclick="setVizMode('scope',this)">SCOPE</button>
+          <button class="mode-btn" onclick="setVizMode('dots',this)">DOTS</button>
+        </div>
+      </div>
+
+      <div class="player-bar">
+        <div class="player-info">
+          <div class="player-tag" id="player-tag">// READY</div>
+          <div class="player-name" id="player-name">SELECT A TRACK</div>
+        </div>
+        <div class="player-center">
+          <div class="player-controls">
+            <button class="pctrl" onclick="prevTrack()" title="Prev">&#9664;&#9664;</button>
+            <button class="pctrl main" id="ppbtn" onclick="togglePlay()">&#9654;</button>
+            <button class="pctrl" onclick="nextTrack()" title="Next">&#9654;&#9654;</button>
+          </div>
+          <div class="player-progress" onclick="scrub(event)" id="progress-bar">
+            <div class="pp-track">
+              <div class="pp-fill" id="pp-fill"></div>
+              <div class="pp-head" id="pp-head"></div>
+            </div>
+          </div>
+          <div class="player-times">
+            <span id="cur-t">0:00</span>
+            <span id="tot-t">0:00</span>
+          </div>
+        </div>
+        <div class="player-vol">
+          <span class="vol-label">VOL</span>
+          <input type="range" id="vol-slider" min="0" max="100" value="80" oninput="setVol(this.value)">
+          <span class="vol-val" id="vol-val">80</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRACKLIST -->
+    <section class="tracks-section" id="tracks">
+      <div class="section-header">
+        <h2 class="section-title">TRACKLIST</h2>
+        <div class="section-line"></div>
+        <span class="section-tag">12 CUTS // 47:22</span>
+      </div>
+      <div class="tracklist" id="tracklist"></div>
+    </section>
+
+    <!-- BIO -->
+    <section class="bio-section" id="bio">
+      <div class="section-header">
+        <h2 class="section-title">SIGNAL SOURCE</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="bio-grid">
+        <div class="bio-card bio-main">
+          <div class="bio-card-label">// BIO.TXT</div>
+          <p class="bio-text">
+            ImpresiveMC is a Pacific Northwest-based underground Hip-Hop artist who moves between raw street lyricism and forward-thinking, futuristic production. Built from scratch — no label, no machine. NEURAL//GRID is the latest chapter: 12 tracks recorded in isolation, engineered for maximum impact.
+          </p>
+          <p class="bio-text" style="margin-top:12px">
+            The bars are precise. The beats are heavy. The signal is always on.
+          </p>
+        </div>
+        <div class="bio-card">
+          <div class="bio-card-label">// STREAMS</div>
+          <div class="bio-big-num">2.4M</div>
+          <div class="bio-small">Cross-platform. Fully independent.</div>
+        </div>
+        <div class="bio-card">
+          <div class="bio-card-label">// LOCATION</div>
+          <div class="bio-big-num" style="font-size:2rem">PACIFIC<br>NORTHWEST</div>
+        </div>
+        <div class="bio-card">
+          <div class="bio-card-label">// SOUNDS LIKE</div>
+          <div class="bio-tags">
+            <span class="bio-tag">RAW</span>
+            <span class="bio-tag">GRIMY</span>
+            <span class="bio-tag">SHARP</span>
+            <span class="bio-tag">FUTURE</span>
+            <span class="bio-tag">REAL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MERCH PLACEHOLDER -->
+    <section class="merch-section" id="merch">
+      <div class="section-header">
+        <h2 class="section-title">MERCH</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="merch-placeholder">
+        <div class="merch-icon">[ DROP COMING ]</div>
+        <p class="merch-sub">Add your Shopify / Printful links in <code>js/tracks.js</code></p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact-section" id="contact">
+      <div class="section-header">
+        <h2 class="section-title">CONTACT</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-label">// BOOKING & FEATURES</div>
+          <!-- EDIT: Replace with your real email -->
+          <a class="contact-email" href="mailto:booking@impresivemc.com">booking@impresivemc.com</a>
+          <div class="social-row">
+            <!-- EDIT: Replace # with your real URLs -->
+            <a class="social-btn" href="#" target="_blank">INSTAGRAM</a>
+            <a class="social-btn" href="#" target="_blank">TWITTER/X</a>
+            <a class="social-btn" href="#" target="_blank">SPOTIFY</a>
+            <a class="social-btn" href="#" target="_blank">SOUNDCLOUD</a>
+            <a class="social-btn" href="#" target="_blank">YOUTUBE</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-logo">IMPRESIVE<span class="logo-accent">_</span>MC</div>
+      <div class="footer-copy">© 2025 IMPRESIVEMC — ALL WRONGS RESERVED</div>
+    </footer>
+
+  </div><!-- /site -->
+
+  <script src="js/tracks.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
